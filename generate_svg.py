@@ -73,6 +73,15 @@ def black_and_white(image):
     image = image.convert('1')
     return image
 
+def black_and_white_adaptive_threshold(image):
+    # convert to black and white
+    image = np.array(image) 
+    image = image[:, :, ::-1].copy() 
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    background = cv2.adaptiveThreshold(image,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY,11,2)
+    background = Image.fromarray(background)
+    return background
+
 def Augmentor_filter():
     # perspective , black and white and distortion using Augmentor library
     p = Augmentor.Pipeline('resources/sample-images/')
@@ -146,6 +155,7 @@ def create_text_image(driver, text, primary_font_family, secondary_font_family, 
     background.paste(image, image)
     # convert to black and white
     background = black_and_white(background)
+    # background = black_and_white_adaptive_threshold(image)
     return background
 
 
